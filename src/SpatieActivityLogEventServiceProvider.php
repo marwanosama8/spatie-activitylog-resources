@@ -13,17 +13,17 @@ class SpatieActivityLogEventServiceProvider extends ServiceProvider
     public function listens()
     {
         $listen = array_merge(
-            config('filament-logger.access.enabled') ? [
+            config('spatie-activitylog-resources.access.enabled') ? [
                 Login::class => [
-                    config('filament-logger.access.logger'),
+                    config('spatie-activitylog-resources.access.logger'),
                 ],
             ] : [],
-            config('filament-logger.notifications.enabled') ? [
+            config('spatie-activitylog-resources.notifications.enabled') ? [
                 NotificationSent::class => [
-                    config('filament-logger.notifications.logger'),
+                    config('spatie-activitylog-resources.notifications.logger'),
                 ],
                 NotificationFailed::class => [
-                    config('filament-logger.notifications.logger'),
+                    config('spatie-activitylog-resources.notifications.logger'),
                 ],
             ] : []
         );

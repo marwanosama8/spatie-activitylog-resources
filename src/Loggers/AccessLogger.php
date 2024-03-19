@@ -20,7 +20,7 @@ class AccessLogger
         $description = Filament::getUserName($event->user).' logged in';
 
         app(ActivityLogger::class)
-            ->useLog(config('filament-logger.access.log_name'))
+            ->useLog(config('spatie-activitylog-resources.access.log_name'))
             ->setLogStatus(app(ActivityLogStatus::class))
             ->withProperties(['ip' => request()->ip(), 'user_agent' => request()->userAgent()])
             ->event('Login')

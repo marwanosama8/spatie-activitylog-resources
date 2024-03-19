@@ -6,6 +6,6 @@ class ModelLogger extends AbstractModelLogger
 {
     protected function getLogName(): string
     {
-        return config('filament-logger.models.log_name');
+        return config('spatie-activitylog-resources.models.log_name');
     }
 }

@@ -28,7 +28,7 @@ use Filament\Forms\Components\Select;
 
 class ActivityResource extends Resource
 {
-    protected static ?string $label = 'Activity Log';
+    protected static ?string $label = 'Activity Loasdg';
     protected static ?string $slug = 'activity-logs';
     protected static ?string $navigationGroup = 'Admin';
 
@@ -83,7 +83,7 @@ class ActivityResource extends Resource
                             ->label(__('filament-logger.resource.label.logged_at'))
                             ->content(function (?Model $record): string {
                                 /** @var Activity&ActivityModel $record */
-                                return $record->created_at ? "{$record->created_at->format(config('filament-logger.datetime_format', 'd/m/Y H:i:s'))}" : '-';
+                                return $record->created_at ? "{$record->created_at->format(config('spatie-activitylog-resources.datetime_format', 'd/m/Y H:i:s'))}" : '-';
                             }),
                     ])
                 ]),
@@ -159,7 +159,7 @@ class ActivityResource extends Resource
 
                 TextColumn::make('created_at')
                     ->label(__('filament-logger.resource.label.logged_at'))
-                    ->dateTime(config('filament-logger.datetime_format', 'd/m/Y H:i:s'))
+                    ->dateTime(config('spatie-activitylog-resources.datetime_format', 'd/m/Y H:i:s'))
                     ->sortable(),
             ])
             ->defaultSort('created_at', 'desc')
@@ -226,7 +226,7 @@ class ActivityResource extends Resource
                     ->form([
                         DatePicker::make('logged_at')
                             ->label(__('filament-logger.resource.label.logged_at'))
-                            ->displayFormat(config('filament-logger.date_format', 'd/m/Y')),
+                            ->displayFormat(config('spatie-activitylog-resources.date_format', 'd/m/Y')),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
@@ -253,9 +253,9 @@ class ActivityResource extends Resource
 
     protected static function getSubjectTypeList(): array
     {
-        if (config('filament-logger.resources.models', true)) {
+        if (config('spatie-activitylog-resources.resources.models', true)) {
             $subjects = [];
-            $exceptResources = [...config('filament-logger.resources.exclude'), config('filament-logger.activity_resource')];
+            $exceptResources = [...config('spatie-activitylog-resources.resources.exclude'), config('spatie-activitylog-resources.activity_resource')];
             $removedExcludedResources = collect(Filament::getResources())->filter(function ($resource) use ($exceptResources) {
                 return !in_array($resource, $exceptResources);
             });
@@ -272,22 +272,22 @@ class ActivityResource extends Resource
     {
         $customs = [];
 
-        foreach (config('filament-logger.custom') ?? [] as $custom) {
+        foreach (config('spatie-activitylog-resources.custom') ?? [] as $custom) {
             $customs[$custom['log_name']] = $custom['log_name'];
         }
 
         return array_merge(
-            config('filament-logger.resources.enabled') ? [
-                config('filament-logger.resources.log_name') => config('filament-logger.resources.log_name'),
+            config('spatie-activitylog-resources.resources.enabled') ? [
+                config('spatie-activitylog-resources.resources.log_name') => config('spatie-activitylog-resources.resources.log_name'),
             ] : [],
-            config('filament-logger.models.enabled') ? [
-                config('filament-logger.models.log_name') => config('filament-logger.models.log_name'),
+            config('spatie-activitylog-resources.models.enabled') ? [
+                config('spatie-activitylog-resources.models.log_name') => config('spatie-activitylog-resources.models.log_name'),
             ] : [],
-            config('filament-logger.access.enabled')
-                ? [config('filament-logger.access.log_name') => config('filament-logger.access.log_name')]
+            config('spatie-activitylog-resources.access.enabled')
+                ? [config('spatie-activitylog-resources.access.log_name') => config('spatie-activitylog-resources.access.log_name')]
                 : [],
-            config('filament-logger.notifications.enabled') ? [
-                config('filament-logger.notifications.log_name') => config('filament-logger.notifications.log_name'),
+            config('spatie-activitylog-resources.notifications.enabled') ? [
+                config('spatie-activitylog-resources.notifications.log_name') => config('spatie-activitylog-resources.notifications.log_name'),
             ] : [],
             $customs,
         );
@@ -297,24 +297,24 @@ class ActivityResource extends Resource
     {
         $customs = [];
 
-        foreach (config('filament-logger.custom') ?? [] as $custom) {
+        foreach (config('spatie-activitylog-resources.custom') ?? [] as $custom) {
             if (filled($custom['color'] ?? null)) {
                 $customs[$custom['color']] = $custom['log_name'];
             }
         }
 
         return array_merge(
-            (config('filament-logger.resources.enabled') && config('filament-logger.resources.color')) ? [
-                config('filament-logger.resources.color') => config('filament-logger.resources.log_name'),
+            (config('spatie-activitylog-resources.resources.enabled') && config('spatie-activitylog-resources.resources.color')) ? [
+                config('spatie-activitylog-resources.resources.color') => config('spatie-activitylog-resources.resources.log_name'),
             ] : [],
-            (config('filament-logger.models.enabled') && config('filament-logger.models.color')) ? [
-                config('filament-logger.models.color') => config('filament-logger.models.log_name'),
+            (config('spatie-activitylog-resources.models.enabled') && config('spatie-activitylog-resources.models.color')) ? [
+                config('spatie-activitylog-resources.models.color') => config('spatie-activitylog-resources.models.log_name'),
             ] : [],
-            (config('filament-logger.access.enabled') && config('filament-logger.access.color')) ? [
-                config('filament-logger.access.color') => config('filament-logger.access.log_name'),
+            (config('spatie-activitylog-resources.access.enabled') && config('spatie-activitylog-resources.access.color')) ? [
+                config('spatie-activitylog-resources.access.color') => config('spatie-activitylog-resources.access.log_name'),
             ] : [],
-            (config('filament-logger.notifications.enabled') &&  config('filament-logger.notifications.color')) ? [
-                config('filament-logger.notifications.color') => config('filament-logger.notifications.log_name'),
+            (config('spatie-activitylog-resources.notifications.enabled') &&  config('spatie-activitylog-resources.notifications.color')) ? [
+                config('spatie-activitylog-resources.notifications.color') => config('spatie-activitylog-resources.notifications.log_name'),
             ] : [],
             $customs,
         );

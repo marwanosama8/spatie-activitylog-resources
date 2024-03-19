@@ -35,7 +35,7 @@ class NotificationLogger
         }
 
         app(ActivityLogger::class)
-            ->useLog(config('filament-logger.notifications.log_name'))
+            ->useLog(config('spatie-activitylog-resources.notifications.log_name'))
             ->setLogStatus(app(ActivityLogStatus::class))
             ->causedByAnonymous()
             ->event(Str::of(class_basename($event))->headline())
