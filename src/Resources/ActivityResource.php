@@ -28,11 +28,11 @@ use Filament\Forms\Components\Select;
 
 class ActivityResource extends Resource
 {
-    protected static ?string $label = 'Activity Loasdg';
+    protected static ?string $label = 'Activity Logs';
     protected static ?string $slug = 'activity-logs';
     protected static ?string $navigationGroup = 'Admin';
 
-    // protected static ?string $navigationIcon = 'heroicon-o-clipboard-list';
+    protected static ?string $navigationIcon = 'heroicon-o-clock';
 
     public static function form(Form $form): Form
     {
@@ -45,17 +45,17 @@ class ActivityResource extends Resource
                                 /** @phpstan-ignore-next-line */
                                 return $component->state($record->causer?->name);
                             })
-                            ->label(__('filament-logger.resource.label.user')),
+                            ->label(__('spatie-activitylog-resources::filament-logger.resource.label.user')),
 
                         TextInput::make('subject_type')
                             ->afterStateHydrated(function ($component, ?Model $record, $state) {
                                 /** @var Activity&ActivityModel $record */
                                 return $state ? $component->state(Str::of($state)->afterLast('\\')->headline() . ' # ' . $record->subject_id) : '-';
                             })
-                            ->label(__('filament-logger.resource.label.subject')),
+                            ->label(__('spatie-activitylog-resources::filament-logger.resource.label.subject')),
 
                         Textarea::make('description')
-                            ->label(__('filament-logger.resource.label.description'))
+                            ->label(__('spatie-activitylog-resources::filament-logger.resource.label.description'))
                             ->rows(2)
                             ->columnSpan('full'),
                     ])
@@ -70,17 +70,17 @@ class ActivityResource extends Resource
                                 /** @var Activity&ActivityModel $record */
                                 return $record->log_name ? ucwords($record->log_name) : '-';
                             })
-                            ->label(__('filament-logger.resource.label.type')),
+                            ->label(__('spatie-activitylog-resources::filament-logger.resource.label.type')),
 
                         Placeholder::make('event')
                             ->content(function (?Model $record): string {
                                 /** @phpstan-ignore-next-line */
                                 return $record?->event ? ucwords($record?->event) : '-';
                             })
-                            ->label(__('filament-logger.resource.label.event')),
+                            ->label(__('spatie-activitylog-resources::filament-logger.resource.label.event')),
 
                         Placeholder::make('created_at')
-                            ->label(__('filament-logger.resource.label.logged_at'))
+                            ->label(__('spatie-activitylog-resources::filament-logger.resource.label.logged_at'))
                             ->content(function (?Model $record): string {
                                 /** @var Activity&ActivityModel $record */
                                 return $record->created_at ? "{$record->created_at->format(config('spatie-activitylog-resources.datetime_format', 'd/m/Y H:i:s'))}" : '-';
@@ -98,20 +98,20 @@ class ActivityResource extends Resource
 
                         if ($properties->count()) {
                             $schema[] = KeyValue::make('properties')
-                                ->label(__('filament-logger.resource.label.properties'))
+                                ->label(__('spatie-activitylog-resources::filament-logger.resource.label.properties'))
                                 ->columnSpan('full');
                         }
 
                         if ($old = $record->properties->get('old')) {
                             $schema[] = KeyValue::make('old')
                                 ->afterStateHydrated(fn (KeyValue $component) => $component->state($old))
-                                ->label(__('filament-logger.resource.label.old'));
+                                ->label(__('spatie-activitylog-resources::filament-logger.resource.label.old'));
                         }
 
                         if ($attributes = $record->properties->get('attributes')) {
                             $schema[] = KeyValue::make('attributes')
                                 ->afterStateHydrated(fn (KeyValue $component) => $component->state($attributes))
-                                ->label(__('filament-logger.resource.label.new'));
+                                ->label(__('spatie-activitylog-resources::filament-logger.resource.label.new'));
                         }
 
                         return $schema;
@@ -124,28 +124,28 @@ class ActivityResource extends Resource
     {
         $users = User::all()->pluck('name', 'id');
         $users->prepend('All');
-        
+
         return $table
             ->columns([
                 TextColumn::make('log_name')
                     ->badge()
                     ->colors(static::getLogNameColors())
-                    ->label(__('filament-logger.resource.label.type'))
+                    ->label(__('spatie-activitylog-resources::filament-logger.resource.label.type'))
                     ->formatStateUsing(fn ($state) => ucwords($state))
                     ->sortable(),
 
                 TextColumn::make('event')
-                    ->label(__('filament-logger.resource.label.event'))
+                    ->label(__('spatie-activitylog-resources::filament-logger.resource.label.event'))
                     ->sortable(),
 
                 TextColumn::make('description')
-                    ->label(__('filament-logger.resource.label.description'))
+                    ->label(__('spatie-activitylog-resources::filament-logger.resource.label.description'))
                     ->toggleable()
                     ->toggledHiddenByDefault()
                     ->wrap(),
 
                 TextColumn::make('subject_type')
-                    ->label(__('filament-logger.resource.label.subject'))
+                    ->label(__('spatie-activitylog-resources::filament-logger.resource.label.subject'))
                     ->formatStateUsing(function ($state, Model $record) {
                         /** @var Activity&ActivityModel $record */
                         if (!$state) {
@@ -155,10 +155,10 @@ class ActivityResource extends Resource
                     }),
 
                 TextColumn::make('causer.name')
-                    ->label(__('filament-logger.resource.label.user')),
+                    ->label(__('spatie-activitylog-resources::filament-logger.resource.label.user')),
 
                 TextColumn::make('created_at')
-                    ->label(__('filament-logger.resource.label.logged_at'))
+                    ->label(__('spatie-activitylog-resources::filament-logger.resource.label.logged_at'))
                     ->dateTime(config('spatie-activitylog-resources.datetime_format', 'd/m/Y H:i:s'))
                     ->sortable(),
             ])
@@ -168,17 +168,17 @@ class ActivityResource extends Resource
                 Filter::make('causer')
                     ->form([
                         Select::make('causer_id')
-                            ->label(__('filament-logger.resource.label.user'))
+                            ->label(__('spatie-activitylog-resources::filament-logger.resource.label.user'))
                             ->options($users)
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query->when($data['causer_id'], fn (Builder $query, $date): Builder => $query->where('causer_type', 'App\Models\User')->where('causer_id', $data['causer_id']));
                     }),
                 SelectFilter::make('log_name')
-                    ->label(__('filament-logger.resource.label.type'))
+                    ->label(__('spatie-activitylog-resources::filament-logger.resource.label.type'))
                     ->options(static::getLogNameList()),
                 SelectFilter::make('subject_type')
-                    ->label(__('filament-logger.resource.label.subject_type'))
+                    ->label(__('spatie-activitylog-resources::filament-logger.resource.label.subject_type'))
                     ->options(static::getSubjectTypeList()),
                 Filter::make('properties->old')
                     ->indicateUsing(function (array $data): ?string {
@@ -186,12 +186,12 @@ class ActivityResource extends Resource
                             return null;
                         }
 
-                        return __('filament-logger.resource.label.old_attributes') . $data['old'];
+                        return __('spatie-activitylog-resources::filament-logger.resource.label.old_attributes') . $data['old'];
                     })
                     ->form([
                         TextInput::make('old')
-                            ->label(__('filament-logger.resource.label.old'))
-                            ->hint(__('filament-logger.resource.label.properties_hint')),
+                            ->label(__('spatie-activitylog-resources::filament-logger.resource.label.old'))
+                            ->hint(__('spatie-activitylog-resources::filament-logger.resource.label.properties_hint')),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         if (!$data['old']) {
@@ -207,12 +207,12 @@ class ActivityResource extends Resource
                             return null;
                         }
 
-                        return __('filament-logger.resource.label.new_attributes') . $data['new'];
+                        return __('spatie-activitylog-resources::filament-logger.resource.label.new_attributes') . $data['new'];
                     })
                     ->form([
                         TextInput::make('new')
-                            ->label(__('filament-logger.resource.label.new'))
-                            ->hint(__('filament-logger.resource.label.properties_hint')),
+                            ->label(__('spatie-activitylog-resources::filament-logger.resource.label.new'))
+                            ->hint(__('spatie-activitylog-resources::filament-logger.resource.label.properties_hint')),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         if (!$data['new']) {
@@ -225,7 +225,7 @@ class ActivityResource extends Resource
                 Filter::make('created_at')
                     ->form([
                         DatePicker::make('logged_at')
-                            ->label(__('filament-logger.resource.label.logged_at'))
+                            ->label(__('spatie-activitylog-resources::filament-logger.resource.label.logged_at'))
                             ->displayFormat(config('spatie-activitylog-resources.date_format', 'd/m/Y')),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
@@ -322,26 +322,26 @@ class ActivityResource extends Resource
 
     public static function getLabel(): string
     {
-        return __('filament-logger.resource.label.log');
+        return __('spatie-activitylog-resources::filament-logger.resource.label.log');
     }
 
     public static function getPluralLabel(): string
     {
-        return __('filament-logger.resource.label.logs');
+        return __('spatie-activitylog-resources::filament-logger.resource.label.logs');
     }
 
     public static function getNavigationGroup(): ?string
     {
-        return 'Admin';
+        return config('spatie-activitylog-resources.nav.group');
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('filament-logger.nav.log.label');
+        return __('spatie-activitylog-resources::filament-logger.nav.log.label');
     }
 
     public static function getNavigationIcon(): string
     {
-        return __('filament-logger.nav.log.icon');
+        return config('spatie-activitylog-resources.nav.icon');
     }
 }

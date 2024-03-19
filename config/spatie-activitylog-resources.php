@@ -31,7 +31,7 @@ return [
     ],
 
     'models' => [
-        'enabled' => true,
+        'enabled' => false,
         'log_name' => 'Model',
         'color' => 'warning',
         'logger' => \Marwanosama8\SpatieActivitylogResources\Loggers\ModelLogger::class,
@@ -48,6 +48,7 @@ return [
     ],
 
     'nav' => [
-        'group' => 'Admin'
+        'group' => 'Admin',
+        'icon' => 'heroicon-o-clock',
     ]
 ];
