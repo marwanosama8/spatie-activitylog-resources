@@ -92,17 +92,17 @@ class SpatieActivitylogResourcesServiceProvider extends PackageServiceProvider
         return 'marwanosama8/spatie-activitylog-resources';
     }
 
-    /**
-     * @return array<Asset>
-     */
-    protected function getAssets(): array
-    {
-        return [
-            // AlpineComponent::make('spatie-activitylog-resources', __DIR__ . '/../resources/dist/components/spatie-activitylog-resources.js'),
-            Css::make('spatie-activitylog-resources-styles', __DIR__ . '/../resources/dist/spatie-activitylog-resources.css'),
-            Js::make('spatie-activitylog-resources-scripts', __DIR__ . '/../resources/dist/spatie-activitylog-resources.js'),
-        ];
-    }
+    // /**
+    //  * @return array<Asset>
+    //  */
+    // protected function getAssets(): array
+    // {
+    //     return [
+    //         // AlpineComponent::make('spatie-activitylog-resources', __DIR__ . '/../resources/dist/components/spatie-activitylog-resources.js'),
+    //         Css::make('spatie-activitylog-resources-styles', __DIR__ . '/../resources/dist/spatie-activitylog-resources.css'),
+    //         Js::make('spatie-activitylog-resources-scripts', __DIR__ . '/../resources/dist/spatie-activitylog-resources.js'),
+    //     ];
+    // }
 
     /**
      * @return array<class-string>
