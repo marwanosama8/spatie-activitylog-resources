@@ -9,45 +9,29 @@
 
 This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
 
-## Installation
+# Installation
+## First
+You need to install Spatie laravel-activitylog, and it's base installation,
 
-You can install the package via composer:
+follow this page instructions [https://spatie.be/docs/laravel-activitylog/v4/installation-and-setup] 
+## Second
+install my package to your application,
 
+after successfully install run :
 ```bash
-composer require marwanosama8/spatie-activitylog-resources
+php artisan spatie-activitylog-resources:install
 ```
 
-You can publish and run the migrations with:
 
-```bash
-php artisan vendor:publish --tag="spatie-activitylog-resources-migrations"
-php artisan migrate
-```
-
-You can publish the config file with:
-
-```bash
-php artisan vendor:publish --tag="spatie-activitylog-resources-config"
-```
-
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag="spatie-activitylog-resources-views"
-```
-
-This is the contents of the published config file:
-
-```php
-return [
-];
-```
 
 ## Usage
-
+Add the plucgen to plugin method placed in your panel service provider 
 ```php
-$spatieActivitylogResources = new Marwanosama8\SpatieActivitylogResources();
-echo $spatieActivitylogResources->echoPhrase('Hello, Marwanosama8!');
+// Ex: AdminServiceProvider
+ return $panel
+            ->plugins([
+                SpatieActivitylogResourcesPlugin::make()
+                    ]);
 ```
 
 ## Testing
