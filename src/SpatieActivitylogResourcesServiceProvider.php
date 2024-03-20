@@ -60,8 +60,8 @@ class SpatieActivitylogResourcesServiceProvider extends PackageServiceProvider
 
     public function packageBooted(): void
     {
-        // Icon Registration
-        FilamentIcon::register($this->getIcons());
+        // // Icon Registration
+        // FilamentIcon::register($this->getIcons());
 
         // Handle Stubs
         if (app()->runningInConsole()) {
